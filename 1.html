@@ -76,7 +76,7 @@
                     text+="<br/>";
                }
     document.getElementById("sl").innerHTML=text;
-  
+
     function fun(x,y)
     {
         if(arr[x][y].on) return;
@@ -114,6 +114,7 @@
                 else if(arr[x][y].count<5) color="blue";
                 else color="red";
                 document.getElementById("sl"+x+y).style.color=color;
+                document.getElementById("sl"+x+y).innerHTML=arr[x][y].count;
                 
             }
      }

@@ -1,83 +1,131 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="utf-8">
-        <title>
-            这里是标题
-        </title>
-        <base target="_parent">
-        <style>
-            p{color :red}
-      
-        </style>
-    </head>
-        <boty>
-        <h1>
-              <i>
-                  <strong>
-                      标题
-                  </strong>
-              </i>
-           <hr>
-        </h1>
+<!DOCHTML>
+<head>
+    <title>
+        扫雷
+    </title>
+    <style>
+        body
+        {
+            background-color:lightblue;
 
-            内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容<br>
-            内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容<br>
-            <i>
-                我是斜体字
-            </i>
-            x<sup>2</sup>
-            b<sub>3</sub>
-                <br>
-                <del>
-                    我是删除线
-                </del>
-            <ins>
-                我是下划线
-            </ins>
-            <del>
-                <ins>
-                    <br>
-                    看看效果
-                </ins>
-            </del>
-            <pre>
+        }
+        button
+        {
+            background-color:lightblue; 
+            height:23; 
+            width:23;
+        }
+       
+    </style>
+    <body >
+        <p id=sl></p>
+    <script>
+        var arr=new Array();
+        var boom=[];
+        for(let i=0;i<10;++i)
+        {
+            var p=0;
+            var n=Math.floor(Math.random()*100);
+            for(let j=0;j<i;++j)
+                if(n==boom[j]) 
+                {
+                    --i;
+                    p=1;
+                }  
+            if(!p)        
+            boom[i]=n;
+        }
+            for(let i=0;i<10;++i)
+                 for(let i=0;i<12;++i)
+            arr[i]=new Array();
+              for(let i=0;i<12;++i)
+                  for(let j=0;j<12;++j)
+            arr[i][j]={
+                html:"<button id=sl"+i+j+" type='button' onclick=fun("+i+","+j+")>&nbsp&nbsp</button>",
+                p:0,
+                count:0,
+                on:0
+        };
+        for(let i=0;i<10;++i)
+        {
+            var x=Math.floor(boom[i]/10)+1;
+            var y=boom[i]%10+1;
+            arr[x][y].p=1;
+        }
+        for(let i=0;i<12;++i)
+            arr[0][i].on=1;
+            for(let i=0;i<12;++i)
+            arr[i][0].on=1;
+            for(let i=0;i<12;++i)
+            arr[11][i].on=1;
+            for(let i=0;i<12;++i)
+            arr[i][11].on=1;
+        for(let i=1;i<=10;++i)
+               for(let j=1;j<=10;++j)
+                   if(arr[i][j].p==1) arr[i][j].count=-1;
+                else
+                    for(let x=i-1;x<=i+1;++x)
+                        for(let y=j-1;y<=j+1;++y)
+                        arr[i][j].count+=arr[x][y].p;
+        var text="&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp扫&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp雷<br/>";
+            for(let i=1;i<=10;++i)
+               {
+                    text+="";
+                    for(let j=1;j<=10;++j)
+                        text+=arr[i][j].html;
+                    text+="<br/>";
+               }
+    document.getElementById("sl").innerHTML=text;
+    for(let i=1;i<=10;++i)
+               for(let j=1;j<=10;++j)
+               document.getElementById("sl"+i+j).innerHTML=arr[i][j].count;
 
-窗前明月光，
-疑是地上霜。
-举头思明月，
-低头思故乡。
-            </pre>
-        <ol type="I">
-            <h2>
-                <li>第一个 
-                <li>第二个
-            </h2>
-                第三个
-        </ol> 
+    function fun(x,y)
+    {
+        if(arr[x][y].on) return;
+        if(arr[x][y].p==1) 
+            die();
+        else fun2(x,y);
+        var count=0;
+        for(let i=1;i<=10;++i)
+               for(let j=1;j<=10;++j)
+                    count+=arr[i][j].on;
         
-        <ul type ="circle">
-            <li>第一个</li>
-            <li>第二个</li>
-        </ul>
-        <dl>
-            <dt>词条1</dt>
-            <dd>这里是词条1的解释啊</dd>
-            <dt>
-                <p>
-                    词条 2
-                </p>
-            </dt>
-            <dd>
-                这里是 词条2的解释
-            </dd>
-        </dl>
-        阿吧<br>
-
-        <img src="http://keaitupian.wujin2688.com/uploads/allimg/200610/1422263125-1.jpg" alt="壁纸" width="600" height="300"/>
-        <br> 图片来自
-        <a href="http://www.baidu.com"百度>
-            baidu
-        </a>
-        </boty >
-</html>
+        if(count==90) 
+        {
+            window.alert("win");
+            location.reload();
+        }
+            
+    }
+    function fun2(x,y)
+    {
+            if(arr[x][y].p==1||arr[x][y].on) return;
+            arr[x][y].on=1;
+            if(arr[x][y].count==0)
+            {
+                document.getElementById("sl"+x+y).style.backgroundColor="rgb(199, 225, 235)";
+                fun2(x+1,y); 
+                fun2(x-1,y);
+                fun2(x,y+1);
+                fun2(x,y-1);
+            }
+             else 
+             {
+                var color="";
+                if(arr[x][y].count<3) color="green";
+                else if(arr[x][y].count<5) color="blue";
+                else color="red";
+                document.getElementById("sl"+x+y).style.color=color;
+                
+            }
+     }
+    function die()
+    {
+        
+        window.alert("die");
+        location.reload();
+    }
+    </script>
+    </body>
+</head>
